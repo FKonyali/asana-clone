@@ -10,7 +10,7 @@
           type="text" 
           class="section__input" 
           :value="title" 
-          @blur="inputBlur" 
+          @blur="inputBlur(index, $event)" 
           @keypress="changeSectionName(index, $event)"
           ref="input"
         >
@@ -111,13 +111,19 @@ export default {
         this.$refs.input.focus();
       })
     },
-    inputBlur () {
+    inputBlur (getIndex, e) {
+      if (e.target.value.length > 0) {
+        const refSectionDataArr = this.getSectionData;
+        refSectionDataArr[getIndex].title = e.target.value;
+        this.$store.commit('updateSectionData', [
+          ...refSectionDataArr
+        ])
+      }
+
       this.isSectionNameEditAble = false;
     },
     changeSectionName (getIndex, e) {
-      console.log(getIndex)
-      console.log(e)
-      if (e.keyCode === 13) {
+      if (e.keyCode === 13 && e.target.value.length > 0) {
         const refSectionDataArr = this.getSectionData;
         refSectionDataArr[getIndex].title = e.target.value;
         this.$store.commit('updateSectionData', [
