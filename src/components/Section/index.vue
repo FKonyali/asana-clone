@@ -143,6 +143,7 @@ export default {
     user-select: none;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
     &__top {
       display: flex;
       justify-content: space-between;
@@ -151,9 +152,13 @@ export default {
       &-left {
         flex: 1;
         padding-right: 15px;
+        max-width: calc(100% - 40px);
       }
       &-name {
         padding: 5px 0;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
     }
     &__bot {
