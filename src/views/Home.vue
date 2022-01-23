@@ -57,7 +57,7 @@ export default {
         ...refSectionDataArr
       ])
 
-      const scrollArea = document.querySelector('html');
+      const scrollArea = document.querySelector('#app');
       this.$nextTick(() => {
         scrollArea.scrollTo({
           left: scrollArea.scrollWidth,
