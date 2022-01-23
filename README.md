@@ -1,5 +1,10 @@
 # asana-clone
 
+## Node version
+```
+14.16.1
+```
+
 ## Project setup
 ```
 npm install
