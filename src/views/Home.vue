@@ -1,10 +1,10 @@
 <template>
   <div class="sections" ref="scrollArea">
     <Section
-      v-for="item in getSectionData"
+      v-for="(item, index) in getSectionData"
       :key="item.id"
       :title="item.title"
-      :id="item.id"
+      :index="index"
       :items="item.items"
     />
     <div class="sections__add">
@@ -30,7 +30,8 @@ export default {
       const refSectionDataArr = this.getSectionData;
       refSectionDataArr.push({
         id: refSectionDataArr.length,
-        title: "New Section"
+        title: "New Section",
+        items: []
       });
 
       this.$store.commit('updateSectionData', [
