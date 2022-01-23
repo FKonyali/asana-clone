@@ -1,5 +1,5 @@
 <template>
-  <button :class="`button ${className}`">
+  <button :class="`button${className ? ' ' + className : ''}`">
     <slot/>
   </button>
 </template>

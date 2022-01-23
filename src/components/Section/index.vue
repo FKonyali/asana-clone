@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <div class="section__top">
+    <div class="section__top js-drag-area">
       <div class="section__top-left" @click="editSectionName">
         <div class="section__top-name" v-if="!isSectionNameEditAble">
           {{ title }}
@@ -25,23 +25,57 @@
       </div>
     </div>
     <div class="section__bot" ref="scrollArea">
-      <div v-if="items">
-        <Task 
-          v-for="item in items"
-          :key="item.id"
-          :item="item"
-        />
+      <div class="section__bot-group" v-if="items.length > 0">
+        <draggable
+          class="list-group"
+          v-model="replicaItems"
+          v-bind="dragOptions"
+          @start="drag = true"
+          @end="drag = false"
+          tag="div"
+          handle=".js-task-drag-area"
+          group="items"
+        >
+          <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+            <Task 
+              v-for="item in replicaItems"
+              :key="item.id"
+              :item="item"
+            />
+          </transition-group>
+        </draggable>
+        <div class="section__remaining js-drag-area"></div>
       </div>
-      <div class="section__blank" v-else>
-        <Button>
+      <div class="section__blank js-drag-area" v-else>
+        <Button @click.native="addNewTask(index)">
           + Add Task
         </Button>
+        <draggable
+          class="list-group"
+          v-model="replicaItems"
+          v-bind="dragOptions"
+          @start="drag = true"
+          @end="drag = false"
+          tag="div"
+          handle=".js-task-drag-area"
+          group="items"
+        >
+          <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+            <Task 
+              v-for="(item, index) in replicaItems"
+              :key="index"
+              :item="item"
+            />
+          </transition-group>
+        </draggable>
+        <div class="section__remaining js-drag-area"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import Button from "../Button";
 import Task from "../Task";
 import IconPlus from "@/assets/img/icon/icon-plus.svg";
@@ -52,11 +86,14 @@ export default {
   components: {
     Task,
     Button,
-    IconPlus
+    IconPlus,
+    draggable
   },
   data () {
     return {
-      isSectionNameEditAble: false
+      isSectionNameEditAble: false,
+      drag: false,
+      replicaItems: []
     }
   },
   props: {
@@ -72,6 +109,9 @@ export default {
       type: Array,
       default: null
     }
+  },
+  mounted () {
+    this.replicaItems = this.items
   },
   methods: {
     addNewTask (getId) {
@@ -135,8 +175,34 @@ export default {
     }
   },
   computed: {
-    getSectionData () {
-      return this.$store.getters.getSectionData
+    getSectionData: {
+      get () {
+        return this.$store.getters.getSectionData
+      },
+      set (value) {
+        this.$store.commit('updateSectionData', value)
+      }
+    },
+    dragOptions() {
+      return {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
+  },
+  watch: {
+    'replicaItems': function () {
+      const getSectionIndex = this.index;
+      const getReplicaItems = this.replicaItems;
+      const refSectionDataArr = this.getSectionData;
+
+      refSectionDataArr[getSectionIndex].items = getReplicaItems;
+
+      this.$store.commit('updateSectionData', [
+        ...refSectionDataArr
+      ])
     }
   }
 }
@@ -172,6 +238,21 @@ export default {
       overflow-y: auto;
       padding: 0 15px;
       flex: 1;
+      &-group {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .list-group {
+        height: 100%;
+        span {
+          display: block;
+          height: 100%;
+        }
+      }
+    }
+    &__remaining {
+      flex: 1
     }
     &__blank {
       background: #ECEEF0;
@@ -180,6 +261,7 @@ export default {
       user-select: none;
       .button {
         padding: 15px;
+        width: 100%;
       }
     }
     &__input {

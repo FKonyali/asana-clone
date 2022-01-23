@@ -1,5 +1,5 @@
 <template>
-  <div class="task">
+  <div class="task js-task-drag-area">
     <div class="task__top">
       <div class="task__top-left">
         <div 

@@ -7,6 +7,7 @@
       @start="drag = true"
       @end="drag = false"
       tag="div"
+      handle=".js-drag-area"
     >
       <transition-group type="transition" :name="!drag ? 'flip-list' : null">
         <Section
