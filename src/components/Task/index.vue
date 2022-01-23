@@ -26,7 +26,7 @@
           {{ item.count }}
         </div>
         <div class="task__bot-badge-icon">
-          icon
+          <IconList width="16px" fill="#959CA3" />
         </div>
       </div>
     </div>
@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import IconList from "@/assets/img/icon/icon-list.svg";
+
 export default {
   name: "Task",
   props: {
@@ -41,6 +43,9 @@ export default {
       type: Object,
       default: null
     }
+  },
+  components: {
+    IconList
   }
 }
 </script>
@@ -83,6 +88,9 @@ export default {
         align-items: center;
         &-count {
           margin-right: 3px;
+        }
+        &-icon {
+          display: flex;
         }
       }
     }

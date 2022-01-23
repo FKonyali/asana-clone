@@ -17,10 +17,10 @@
       </div>
       <div class="section__top-right">
         <Button className="section__top-add" @click.native="addNewTask(index)">
-          +
+          <IconPlus width="12px" />
         </Button>
         <Button className="section__top-remove" @click.native="removeSection(index)">
-          -
+          <IconTrash width="12px" />
         </Button>
       </div>
     </div>
@@ -62,8 +62,8 @@
         >
           <transition-group type="transition" :name="!drag ? 'flip-list' : null">
             <Task 
-              v-for="(item, index) in replicaItems"
-              :key="index"
+              v-for="(item) in replicaItems"
+              :key="item.id"
               :item="item"
             />
           </transition-group>
@@ -75,11 +75,11 @@
 </template>
 
 <script>
+import IconTrash from "@/assets/img/icon/icon-trash.svg";
+import IconPlus from "@/assets/img/icon/icon-plus.svg";
 import draggable from 'vuedraggable'
 import Button from "../Button";
 import Task from "../Task";
-import IconPlus from "@/assets/img/icon/icon-plus.svg";
-console.log(IconPlus);
 
 export default {
   name: "Section",
@@ -87,7 +87,8 @@ export default {
     Task,
     Button,
     IconPlus,
-    draggable
+    draggable,
+    IconTrash
   },
   data () {
     return {
@@ -224,7 +225,7 @@ export default {
       &-left {
         flex: 1;
         padding-right: 15px;
-        max-width: calc(100% - 40px);
+        max-width: calc(100% - 55px);
       }
       &-name {
         padding: 5px 0;
