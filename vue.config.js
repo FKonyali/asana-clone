@@ -1,4 +1,11 @@
 module.exports = {
+  runtimeCompiler: true,
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/asana-clone'
+    : '/',
+  configureWebpack: {
+    devtool: 'source-map'
+  },
   chainWebpack: (config) => {
     const svgRule = config.module.rule('svg');
 

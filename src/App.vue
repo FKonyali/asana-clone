@@ -16,4 +16,8 @@ body {
   color: #2c3e50;
   background: #F7F7F7;
 }
+
+#app {
+  overflow: auto;
+}
 </style>
