@@ -15,7 +15,7 @@
         </Button>
       </div>
     </div>
-    <div class="section__bot">
+    <div class="section__bot" ref="scrollArea">
       <Task 
         :item="item"
         v-for="item in items"
@@ -66,11 +66,20 @@ export default {
       this.$store.commit('updateSectionData', [
         ...refSectionDataArr
       ])
+
+      const scrollAreaRef = this.$refs.scrollArea;
+      this.$nextTick(() => {
+        scrollAreaRef.scrollTo({
+          top: scrollAreaRef.scrollHeight,
+          behavior: 'smooth',
+        });
+      })
     },
     removeSection (getId ) {
       const refSectionDataArr = this.getSectionData;
       refSectionDataArr.splice(getId, 1);
-      
+      console.log(refSectionDataArr);
+
       this.$store.commit('updateSectionData', [
         ...refSectionDataArr
       ])
